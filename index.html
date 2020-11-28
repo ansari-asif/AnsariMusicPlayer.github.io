@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Music Player Update  Version </title>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css">
+	<style>
+		main{
+			width:100vw;
+			height:90vh;
+			
+			display: grid;
+			place-items:center;
+			background-color: #f6f6f6;
+
+			} .music_container{ 
+				
+				background-color: #ffffff;
+				width: 400px;
+				height: 550px;
+				box-shadow: 0 1.2rem 3rem 0.5rem rgba(0,0,0,0.2);
+				padding: 3rem;
+				text-align: center;
+				border-radius: 2rem;
+
+
+			} 
+			.music_container #title{
+				text-transform: capitalize;
+				letter-spacing: 0.2rem;
+				word-spacing: 0.5rem;
+				color: #171717;
+				font-weight: 500;
+			}
+			.music_container #artist{
+				color: #cccaca;
+			}
+			.img_container{
+				
+				width: 15rem;
+				height: 15rem;
+				margin: auto;
+			}
+			 img{	margin-top: 1rem;
+					width: 100%;
+					height: 100%;
+					border-radius: 50%;
+					object-fit: cover;
+					box-shadow:0 1rem 2.4rem 0.1rem rgba(0,0,0,0.4); 
+				 }
+			.music_controls{
+				align-items: center;
+				width: 20rem;
+				display: flex;
+				justify-content: space-between;
+				margin: auto;	
+				margin-top: 0rem;	
+
+
+			}
+			.fas{
+				cursor: pointer;
+			}
+			.main_btn{
+				width: 4rem;
+				height: 4rem;
+				border-radius: 50%;
+				color: #f6f6f6;
+				background-color: #111111;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.music_controls .fas:hover{
+				color: grey;
+			}
+			.music_controls .fa-play:hover
+				{
+					background-color: grey;
+					color: black;
+				}
+			.progressbar_container{
+				width: 100%;
+				height: auto;
+				padding: 1rem 0;
+				margin-top: 0.5rem;
+			}
+
+			.progress_duration_meter{
+				display: flex;
+				justify-content: space-between;
+			}
+			.progress_div{
+				height: 0.5rem;
+				width: 100%;
+				border-radius: 4rem;
+				position: relative;
+				margin-top: 0.2rem;
+				appearance: none;
+				cursor: pointer;
+				box-shadow:0 1rem 1.4rem 0.1rem rgba(0,0,0,0.4);
+				background-color: grey;
+			}
+			.progress{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 0%;
+				height: 100%;
+				background-color: blue;
+				border-radius: 3rem;
+
+			}
+
+				/*animation*/
+				.anime{
+					animation: rotateplayer 3s linear infinite;
+				}
+				@keyframes rotateplayer {
+					from{
+						transform: rotate(0deg);
+					}
+					to{
+						transform: rotate(360deg);
+					}
+				}
+			</style>
+		</head>
+		<body>
+			<main>
+			<marquee behavior="" direction=""><h5 class="text-danger m-0 p-0"> Ansari Music Player</h5></marquee>
+				<div class="music_container">
+					<h3 id="title">03_-_Zaroorat(bossmobi)</h3>
+					<h4 id="artist">ankit tiwari</h4>
+
+				
+				<div class="img_container">
+					<img src="images/img1.jpg" alt="" class="">
+				</div>
+				<audio src="music/03_-_Zaroorat(bossmobi).mp3"></audio>
+			
+				<!-- progress bar html code -->
+			
+				<div class="progressbar_container" id="progress_container">
+					<div class="progress_duration_meter">
+						<div id="current_time">00:00</div>
+						<div id="duration">02:00</div>
+					</div>
+					<div class="progress_div " id="progress_div">
+						<div class="progress" id="progress"></div>
+					</div>
+				</div>
+			
+				<div class="music_controls">
+					<i class="fas fa-backward" aria-hidden="true" id="prev" title="previous "></i>
+					<i class="fas fa-play main_btn" aria-hidden="true" id="play_pause" title="play or pause"></i>
+
+					<i class="fas fa-forward" aria-hidden="true" id="next" title="next"></i>
+
+				</div>
+				</div>
+			</main>
+			<script>
+				
+				const music=document.querySelector('audio');
+				const img=document.querySelector('img');
+				const play=document.getElementById('play_pause');
+				const title=document.getElementById('title');
+				const artist=document.getElementById('artist');
+				const prev=document.getElementById('prev');
+				const next=document.getElementById('next');
+				let current_time=document.getElementById('current_time');
+				let progress=document.getElementById('progress');
+				let tot_duration=document.getElementById('duration');
+				let progress_div=document.getElementById('progress_div');
+
+				
+
+				let isplaying=false;
+
+				const songs=[
+					{
+						name:"03_-_Zaroorat(bossmobi)",
+						title:"03_-_Zaroorat(bossmobi)",
+						artist:"ankit tiwari",
+						img:"img1"
+					},{
+						name:"(webmusic.in)_Sau-Dard",
+						title:"(webmusic.in)_Sau-Dard",
+						artist:"sonu nigam",
+						img:"img2"
+					},{
+						name:"Abhi Mujh Mein Kahin(MyMp3Song)",
+						title:"Abhi Mujh Mein Kahin(MyMp3Song)",
+						artist:"sonu nigam",
+						img:"img3"
+					},
+				];
+				// for play the song
+				
+				const playMusic = ()=>{
+					isplaying=true;
+					img.classList.add("anime");
+					music.play();
+					play.classList.replace('fa-play','fa-pause');
+				};
+				//for pause the song
+				const pauseMusic = ()=>{
+					isplaying=false;
+					img.classList.remove("anime");
+					music.pause();
+					play.classList.replace('fa-pause','fa-play');
+				};
+
+				play.addEventListener("click",()=>{
+					if(isplaying){
+						pauseMusic();
+						}
+						else
+						{	playMusic();
+
+					}
+				})
+				
+				const loadsongs=(songs)=>{
+					title.textContent=songs.title;
+					artist.textContent=songs.artist;
+					music.src="music/"+songs.name+".mp3";
+					img.src="images/"+songs.img+".jpg";
+				};
+				songsIndex=0;
+				// loadsongs(songs[songsIndex]);
+				 const nextsongs=()=>{
+				 	songsIndex=(songsIndex+1)% songs.length;
+				 	loadsongs(songs[songsIndex]);
+				 	playMusic();
+				 };
+
+				 const prevsongs=()=>{
+				 	songsIndex=(songsIndex-1+songs.length)%songs.length;
+				 	loadsongs(songs[songsIndex]);
+				 	playMusic();
+				 };
+
+				 next.addEventListener("click",nextsongs);
+				 prev.addEventListener("click",prevsongs);
+				 music.addEventListener("timeupdate",(event)=>{
+				 	const {currentTime,duration}=event.srcElement;
+				 	
+				 	let progress_time=(currentTime/duration)*100;
+				 	
+				 	progress.style.width =`${progress_time}%`;
+				 	
+				 	//total duration funcationality
+				 	
+				 	let min_duration=Math.floor(duration/60);
+				 	let sec_duration=Math.floor(duration%60);
+				 	
+				
+					if (sec_duration<10) {
+				 	sec_duration=`0${sec_duration}`;	
+					 }
+				 if (min_duration<10) {
+				 	min_duration=`0${min_duration}`;	
+					 }	
+					 let total_duration=`${min_duration}:${sec_duration}`;
+				if (duration) {
+					tot_duration.textContent=`${total_duration}`;
+				}
+				
+				//current time functionality
+
+				let min_current=Math.floor(currentTime/60);
+				let sec_current=Math.floor(currentTime%60);
+				 if (sec_current<10) {
+				 	sec_current=`0${sec_current}`;	
+					 }
+				 if (min_current<10) {
+				 	min_current=`0${min_current}`;	
+					 }	
+					 let total_current=`${min_current}:${sec_current}`;
+				
+				if (duration) {
+					current_time.textContent=`${total_current}`;
+				}
+				
+
+
+			 });
+				 music.addEventListener("ended",nextsongs);
+
+			progress_div.addEventListener("click",(event)=>{
+				//console.log(event);
+				const {duration}=music;
+				let move_progress=(event.offsetX/event.srcElement.clientWidth)*duration;
+				console.log(move_progress);
+				console.log(duration);
+				music.currentTime=move_progress;
+
+
+				// hihahahahiihaaahhaa has diya rinkiya papa hiihahaha hahaaha
+			});
+
+			</script>
+		</body>
+		</html> 
