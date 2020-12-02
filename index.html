@@ -52,6 +52,22 @@
 				width: 15rem;
 				height: 15rem;
 				margin: auto;
+				position: relative;
+			}
+			.slider_container{
+				position: absolute;
+				width: 100%;
+				
+			}
+			.slider_container .fa{
+				color: tomato;
+				font-weight: bold;
+				cursor: pointer;
+
+			}
+			#volume_slider{
+					cursor: pointer;
+					
 			}
 			 img{	margin-top: 1rem;
 					width: 100%;
@@ -148,6 +164,13 @@
 				
 				<div class="img_container">
 					<img src="images/img1.jpg" alt="" class="">
+					
+					<div class="slider_container"> 
+						<i class="fa fa-volume-down" onclick="muteVol()"></i> 
+						<input type="range" min="0" max="100"
+						value="30" id="volume_slider" onchange="setVolume()"> 
+						<i class="fa fa-volume-up" onclick="fullVol()"></i> 
+					</div> 
 				</div>
 				<audio src="music/03_-_Zaroorat(bossmobi).mp3"></audio>
 			
@@ -312,6 +335,21 @@
 
 				// hihahahahiihaaahhaa has diya rinkiya papa hiihahaha hahaaha
 			});
+				//volume functionality
+				function setVolume(){
+				music.volume=volume_slider.value/100;
+			}
+			function muteVol(){
+				
+				music.volume=0.0;
+				volume_slider.value=0;
+			
+			}
+			function fullVol(){
+				
+				music.volume=1;
+				volume_slider.value=100;
+			}
 
 			</script>
 		</body>
